@@ -59,3 +59,15 @@ def scrape_job_offers(url):
         return df
     else:
         print("Erreur lors de la requête HTTP:", response.status_code)
+
+from datetime import datetime
+
+def exportcsv(dataframe, index=True):
+    date_str = datetime.today().strftime("%Y-%m-%d-%H%M")
+    nom_fichier = f"rhone_alpes_jobs_{date_str}.csv"
+    dataframe.to_csv(nom_fichier, index=index)
+    return f"Exportation vers {nom_fichier} effectuée avec succès."
+
+url = "https://nostalentsnosemplois.auvergnerhonealpes.fr/api/joboffers/search?serjobsearch=true&scoringVersion=SERJOBSEARCH&what=data&sorting=SCORING&page=3&limit=20&expandLocations=true&facet=cities&facet=date&facet=company&facet=industry&facet=contract&facet=job&facet=macroJob&facet=jobType&facet=content_language&facet=license&facet=degree&facet=experienceLevel"
+df = scrape_job_offers(url)
+exportcsv(df)
